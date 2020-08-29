@@ -22,13 +22,17 @@
 //
 //------------------------------------------------------------------------------
 
-#include "libawave.h"
+#if !defined(INC_LIBAWAVE_H)
+#define INC_LIBAWAVE_H
 
-//------------------------------------------------------------------------------
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-int main(int argc, const char* const* argv)
-{
-    return libawavemain(argc, argv);
+int libawavemain(int argc, const char* const* argv);
+
+#ifdef __cplusplus
 }
+#endif
 
-//------------------------------------------------------------------------------
+#endif /* INC_LIBAWAVE_H */

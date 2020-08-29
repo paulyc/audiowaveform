@@ -24,11 +24,37 @@
 
 #include "libawave.h"
 
+#include "Config.h"
+#include "Options.h"
+#include "OptionHandler.h"
+
+#include <iostream>
+#include <limits>
+
 //------------------------------------------------------------------------------
 
-int main(int argc, const char* const* argv)
+static_assert(std::numeric_limits<int>::max() >= 2147483647L, "size of int");
+
+//------------------------------------------------------------------------------
+
+std::ostream& output_stream = std::cout;
+std::ostream& error_stream  = std::cerr;
+
+//------------------------------------------------------------------------------
+
+int libawavemain(int argc, const char* const* argv)
 {
-    return libawavemain(argc, argv);
+    Options options;
+
+    if (!options.parseCommandLine(argc, argv)) {
+        return 1;
+    }
+
+    OptionHandler option_handler;
+
+    bool success = option_handler.run(options);
+
+    return success ? 0 : 1;
 }
 
 //------------------------------------------------------------------------------

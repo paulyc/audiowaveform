@@ -233,6 +233,7 @@ set(MODULES
     src/FileFormat.cpp
     src/FileUtil.cpp
     src/GdImageRenderer.cpp
+    src/LibMain.cpp
     src/MathUtil.cpp
     src/Mp3AudioFileReader.cpp
     src/Options.cpp
@@ -250,9 +251,10 @@ set(MODULES
     src/madlld-1.1p1/bstdfile.c
 )
 
+add_library(awave SHARED ${MODULES})
+
 set(SRCS
     src/Main.cpp
-    ${MODULES}
 )
 
 add_executable(audiowaveform ${SRCS})
@@ -273,7 +275,9 @@ set(
     ${Boost_LIBRARIES}
 )
 
-target_link_libraries(audiowaveform ${LIBS})
+target_link_libraries(awave ${LIBS})
+
+target_link_libraries(audiowaveform awave)
 
 #-------------------------------------------------------------------------------
 #
@@ -282,7 +286,7 @@ target_link_libraries(audiowaveform ${LIBS})
 #-------------------------------------------------------------------------------
 
 if (NOT DEFINED ENABLE_TESTS)
-    set(ENABLE_TESTS 1)
+    set(ENABLE_TESTS 0)
 endif()
 
 if(ENABLE_TESTS)
@@ -356,6 +360,8 @@ add_dependencies(audiowaveform doc)
 #-------------------------------------------------------------------------------
 
 message(STATUS "CMAKE_INSTALL_PREFIX='${CMAKE_INSTALL_PREFIX}'")
+
+install(TARGETS awave DESTINATION lib)
 
 # Install executable
 install(TARGETS audiowaveform DESTINATION bin)
